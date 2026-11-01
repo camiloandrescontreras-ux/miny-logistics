@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#4338ca">
+  <meta name="description" content="MINY Logistics: organiza productos, inventario, ventas, pedidos, compras y finanzas de tu negocio.">
+  <title>MINY Logistics | Gestión de negocios</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- PORTADA E INICIO DE SESIÓN -->
+  <section id="landingPage" class="landing">
+    <img src="Logo-miny.jpeg" alt="Logo de MINY Logistics" class="brand-mark" onerror="this.style.display='none';this.nextElementSibling.hidden=false">
+    <div class="logo-fallback" hidden aria-hidden="true">M</div>
+    <p class="eyebrow">GESTIÓN INTELIGENTE PARA TU NEGOCIO</p>
+    <h1>MINY <span>Logistics</span></h1>
+    <p class="landing-copy">Productos, inventario, ventas, pedidos, compras y finanzas en un solo lugar.</p>
+
+    <p id="authCargando" class="auth-cargando">Conectando…</p>
+
+    <div id="authBox" class="auth-box" hidden>
+      <div class="auth-tabs" role="tablist">
+        <button type="button" class="auth-tab active" data-auth="login" role="tab">Iniciar sesión</button>
+        <button type="button" class="auth-tab" data-auth="registro" role="tab">Crear cuenta</button>
+      </div>
+
+      <form id="formLogin" class="auth-form" novalidate>
+        <label>Correo electrónico<input id="loginEmail" type="email" autocomplete="email" required></label>
+        <label>Contraseña<input id="loginClave" type="password" autocomplete="current-password" required></label>
+        <button class="btn btn-primary btn-large" type="submit">Entrar</button>
+        <button class="auth-link" type="button" data-auth="recuperar">¿Olvidaste tu contraseña?</button>
+      </form>
+
+      <form id="formRegistro" class="auth-form" hidden novalidate>
+        <label>Nombre de tu negocio<input id="regNegocio" type="text" maxlength="80" autocomplete="organization" required placeholder="Ej. Tienda de Ana"></label>
+        <label>Correo electrónico<input id="regEmail" type="email" autocomplete="email" required></label>
+        <label>Contraseña (mínimo 8 caracteres)<input id="regClave" type="password" autocomplete="new-password" minlength="8" required></label>
+        <button class="btn btn-primary btn-large" type="submit">Crear mi cuenta</button>
+        <p class="small-note">Cada cuenta tiene su propio negocio; nadie más ve tus datos. Te enviaremos un correo para confirmar tu cuenta.</p>
+      </form>
+
+      <form id="formRecuperar" class="auth-form" hidden novalidate>
+        <p class="small-note">Escribe tu correo y te enviaremos un enlace para crear una contraseña nueva.</p>
+        <label>Correo electrónico<input id="recEmail" type="email" autocomplete="email" required></label>
+        <button class="btn btn-primary btn-large" type="submit">Enviar enlace</button>
+        <button class="auth-link" type="button" data-auth="login">← Volver</button>
+      </form>
+
+      <form id="formNuevaClave" class="auth-form" hidden novalidate>
+        <p class="small-note">Escribe tu nueva contraseña.</p>
+        <label>Nueva contraseña (mínimo 8 caracteres)<input id="nuevaClave" type="password" autocomplete="new-password" minlength="8" required></label>
+        <button class="btn btn-primary btn-large" type="submit">Guardar contraseña</button>
+      </form>
+
+      <div id="authReintento" class="auth-form" hidden>
+        <button id="reintentarBtn" class="btn btn-primary" type="button">Reintentar</button>
+        <button id="cerrarSesionBtn" class="btn btn-light" type="button">Cerrar sesión</button>
+      </div>
+
+      <p id="authMensaje" class="auth-mensaje" role="status" aria-live="polite" hidden></p>
+    </div>
+    <p class="small-note">Versión 4.0 · Tus datos se guardan de forma segura en tu cuenta y solo tú puedes verlos.</p>
+  </section>
+
+  <!-- APLICACIÓN -->
+  <div id="appShell" class="app-shell" hidden>
+    <header class="topbar">
+      <div class="brand-inline">
+        <img src="Logo-miny.jpeg" alt="" class="mini-logo" onerror="this.style.display='none';this.nextElementSibling.hidden=false">
+        <div class="mini-fallback" hidden aria-hidden="true">M</div>
+        <div><strong>MINY Logistics</strong><small id="marcaNegocio">Gestión de negocios</small></div>
+      </div>
+      <div class="topbar-user">
+        <span id="usuarioEmail" class="usuario-email"></span>
+        <button id="actualizarBtn" class="btn btn-light btn-small" type="button" title="Volver a descargar los datos">↻ Actualizar</button>
+        <button id="salirBtn" class="btn btn-light btn-small" type="button">Salir</button>
+      </div>
+    </header>
+
+    <nav id="navPrincipal" class="main-nav" aria-label="Navegación principal"></nav>
+
+    <main class="container">
+      <div id="mensajeGeneral" class="message" role="status" aria-live="polite" hidden></div>
+      <div id="avisoCritico" class="aviso aviso-alerta" role="alert" hidden></div>
+      <div id="modulos"></div>
+      <footer class="app-footer">MINY Logistics 4.0 · Herramienta de apoyo para pequeños negocios · Datos protegidos en tu cuenta</footer>
+    </main>
+  </div>
+
+  <div id="areaImpresion" aria-hidden="true"></div>
+
+  <div id="barraCarga" aria-hidden="true"></div>
+
+  <!-- Supabase (librería oficial); si el primer enlace no carga, se usa el segundo -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>window.supabase || document.write('<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"><\/script>')</script>
+  <script src="js/config-supabase.js?v=4.0.1"></script>
+  <script src="js/core.js?v=4.0.1"></script>
+  <script src="js/dominio.js?v=4.0.1"></script>
+  <script src="js/reportes.js?v=4.0.1"></script>
+  <script src="js/marketing-datos.js?v=4.0.1"></script>
+  <script src="js/nube.js?v=4.0.1"></script>
+  <script src="js/nube-acciones.js?v=4.0.1"></script>
+  <script src="js/ui-base.js?v=4.0.1"></script>
+  <script src="js/ui-catalogo.js?v=4.0.1"></script>
+  <script src="js/ui-comercial.js?v=4.0.1"></script>
+  <script src="js/ui-abastecimiento.js?v=4.0.1"></script>
+  <script src="js/ui-cobros.js?v=4.0.1"></script>
+  <script src="js/ui-gestion.js?v=4.0.1"></script>
+  <script src="js/ui-marketing.js?v=4.0.1"></script>
+  <script src="js/app.js?v=4.0.1"></script>
+</body>
+</html>
